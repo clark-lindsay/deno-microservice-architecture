@@ -1,6 +1,6 @@
 import { superoak } from "https://deno.land/x/superoak@2.1.0/mod.ts";
 
-import { initializeServer } from "../src/hello-world-server.ts";
+import { initializeServer } from "../src/initialize_server.ts";
 
 const app = initializeServer();
 

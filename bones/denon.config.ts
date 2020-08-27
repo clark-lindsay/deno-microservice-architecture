@@ -12,6 +12,16 @@ const config: DenonConfig = {
       },
       allow: ["net", "env"],
     },
+    test: {
+      cmd: "deno test",
+      desc: "run all the tests",
+      env: {
+        PORT: "8080",
+        APP_NAME: "MICROSERVE",
+      },
+      allow: ["net", "env"],
+      watch: false,
+    },
   },
 };
 

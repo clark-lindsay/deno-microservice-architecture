@@ -1,4 +1,4 @@
-import { initializeServer, getPort } from "./hello-world-server.ts";
+import { initializeServer, getPort } from "./initialize_server.ts";
 
 const app = initializeServer();
 app.listen({ port: getPort() ?? 8080 });
