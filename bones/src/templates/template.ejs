@@ -1,0 +1,6 @@
+<body>
+	<h1>This is the home page</h1>
+	<p>Viewers have watched <%= videosWatched || 0 %> videos</p>
+	<form action="/record-viewing/12345" method=POST id=video_form></form>
+	<button type="submit" form=video_form value="Submit"> Record viewing video</button>
+</body>

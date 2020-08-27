@@ -12,7 +12,7 @@ function setTraceIdHeader(ctx: Context) {
 
 async function applyLocalContextToState(
   ctx: Context,
-  next: () => Promise<void>
+  next: () => Promise<void>,
 ) {
   await next();
   ctx.state["traceId"] = ctx.request.headers.get("TraceId") ?? null;
