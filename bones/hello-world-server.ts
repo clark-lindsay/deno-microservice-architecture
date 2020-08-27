@@ -30,6 +30,11 @@ export function initializeServer(): oak.Application {
   mountMiddleware(app);
 
   app.addEventListener("listen", ({ hostname, port }) => {
+    const appName = getAppName();
+
+    console.log(
+      appName ? `Started ${appName}` : "No APP_NAME environment variable found."
+    );
     console.log(`Listening on http://${hostname ?? "localhost"}:${port}`);
   });
 
@@ -40,6 +45,14 @@ export function getPort(): number | undefined {
   const result = Deno.env.get("PORT");
   if (result) {
     return parseInt(result);
+  }
+  return undefined;
+}
+
+export function getAppName(): string | undefined {
+  const result = Deno.env.get("APP_NAME");
+  if (result) {
+    return result;
   }
   return undefined;
 }
