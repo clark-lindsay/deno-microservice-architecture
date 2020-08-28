@@ -1,7 +1,17 @@
-import { camelCase } from "./deps.ts";
-import { oak } from "./deps.ts";
+import { camelCase } from "../../deps.ts";
+import { oak } from "../../deps.ts";
 import { renderFile } from "https://deno.land/x/dejs/mod.ts";
 import Dex from "https://raw.githubusercontent.com/denjucks/dex/master/mod.ts";
+
+export function createHome({ db }: { db: Promise<any> }) {
+  const queries = createQueries({ db });
+  const handlers = createHandlers({ queries });
+  const router = new oak.Router();
+
+  router.get("/", handlers.home);
+
+  return { handlers, queries, router };
+}
 
 function createHandlers({ queries }: { queries: Queries }): any {
   function home(ctx: oak.Context): Promise<any> {
@@ -13,7 +23,7 @@ function createHandlers({ queries }: { queries: Queries }): any {
 }
 
 function createQueries({ db }: { db: Promise<any> }): any {
-  function loadHomePage() {
+  async function loadHomePage() {
     return db.then((client) =>
       client("videos")
         .sum("view_count as videosWatched")
