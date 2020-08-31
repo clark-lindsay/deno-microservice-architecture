@@ -1,20 +1,18 @@
-import Dex from "https://raw.githubusercontent.com/denjucks/dex/master/mod.ts";
 import { Client } from "https://deno.land/x/postgres/mod.ts";
 
-export async function createDexClient({
+export async function createDBClient({
   connectcionString,
-  migrationsTableName,
-}: DBConnectionArgs): Promise<any> {
+}: DBConnectionArgs): Promise<Client> {
   console.log(connectcionString);
-  const client = Dex({ connection: connectcionString });
-  const migrationOptions = {
-    tableName: migrationsTableName || "dex_migrations",
-  };
+  const client = new Client({
+    user: "postgres",
+    database: "practical_microservices",
+    hostname: "localhost",
+    port: 5432,
+  });
+  await client.connect();
 
-  console.log(`DB Client: ${client}`);
-  return Promise.resolve(client.migrate.latest(migrationOptions)).then(
-    () => client
-  );
+  return client;
 }
 
 interface DBConnectionArgs {

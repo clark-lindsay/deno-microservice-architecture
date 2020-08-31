@@ -1,4 +1,4 @@
-import { createDexClient } from "./createDexClient.ts";
+import { createDBClient } from "./createDexClient.ts";
 import { createHome } from "./app/home/index.ts";
 
 export function createConfig(): any {
@@ -7,7 +7,7 @@ export function createConfig(): any {
     throw new Error("No environment variable found for 'DATABASE_URL'");
   }
 
-  const db = createDexClient({
+  const db = createDBClient({
     connectcionString: dbConnectionURL ?? "",
   });
   const homeApp = createHome({ db });
