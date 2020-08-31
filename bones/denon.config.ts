@@ -3,11 +3,12 @@ import { DenonConfig } from "https://deno.land/x/denon@2.3.2/mod.ts";
 const config: DenonConfig = {
   scripts: {
     start: {
-      cmd: "deno run server.ts",
+      cmd: "deno run src/server.ts",
       desc: "run the server on localhost:8080",
       env: {
         PORT: "8080",
         APP_NAME: "MICROSERVE",
+        DATABASE_URL: "0.0.0.0:5432",
       },
       allow: ["net", "env"],
     },
@@ -17,6 +18,7 @@ const config: DenonConfig = {
       env: {
         PORT: "8080",
         APP_NAME: "MICROSERVE",
+        DATABASE_URL: "0.0.0.0:5432",
       },
       allow: ["net", "env"],
       watch: false,

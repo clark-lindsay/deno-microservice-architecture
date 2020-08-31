@@ -1,7 +1,8 @@
 import { oak } from "./deps.ts";
 import { mountMiddleware } from "./mountMiddleware.ts";
+import { mountRoutes } from "./oak/mountRoutes.ts";
 
-export function initializeServer(): oak.Application {
+export function initializeServer(config: any): oak.Application {
   const app = new oak.Application();
 
   app.use(async (ctx, next) => {
@@ -25,34 +26,10 @@ export function initializeServer(): oak.Application {
 
   app.use(async (ctx, next) => {
     await next();
-    ctx.response.body = `Hello, id: ${ctx.request.headers.get("TraceId")} !\n`;
+    mountRoutes(ctx.app, config);
   });
   mountMiddleware(app);
-
-  app.addEventListener("listen", ({ hostname, port }) => {
-    const appName = getAppName();
-
-    console.log(
-      appName ? `Started ${appName}` : "No APP_NAME environment variable found."
-    );
-    console.log(`Listening on http://${hostname ?? "localhost"}:${port}`);
-  });
 
   return app;
 }
 
-export function getPort(): number | undefined {
-  const result = Deno.env.get("PORT");
-  if (result) {
-    return parseInt(result);
-  }
-  return undefined;
-}
-
-export function getAppName(): string | undefined {
-  const result = Deno.env.get("APP_NAME");
-  if (result) {
-    return result;
-  }
-  return undefined;
-}
