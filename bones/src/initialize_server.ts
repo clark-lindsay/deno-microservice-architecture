@@ -4,6 +4,7 @@ import { mountRoutes } from "./oak/mountRoutes.ts";
 
 export function initializeServer(config: any): oak.Application {
   const app = new oak.Application();
+  mountRoutes(app, config);
 
   app.use(async (ctx, next) => {
     try {
@@ -24,12 +25,7 @@ export function initializeServer(config: any): oak.Application {
     }
   });
 
-  app.use(async (ctx, next) => {
-    await next();
-    mountRoutes(ctx.app, config);
-  });
   mountMiddleware(app);
 
   return app;
 }
-
