@@ -31,8 +31,8 @@ function createQueries({ db }: { db: Promise<Client> }): any {
 }
 
 function createHandlers({ queries }: { queries: Queries }): Handlers {
-  function home(ctx: oak.Context): Promise<any> {
-    return queries["loadHomePage"]()
+  function home(ctx: oak.Context): void {
+    queries["loadHomePage"]()
       .then((viewData: any) => (ctx.response.body = `<p> ${viewData} </p>`))
       .catch(ctx.throw(500));
   }
@@ -44,5 +44,5 @@ interface Queries {
 }
 
 interface Handlers {
-  [key: string]: (ctx: oak.Context) => Promise<any>;
+  [key: string]: (ctx: oak.Context) => void;
 }
