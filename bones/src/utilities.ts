@@ -13,3 +13,31 @@ export function getPort(): number | undefined {
   }
   return undefined;
 }
+
+export function getDBCredentials(): DBCredentials {
+  const result: DBCredentials = {
+    user: getEnvironmentVariable("DB_USER"),
+    databaseName: getEnvironmentVariable("DB_NAME"),
+    hostname: getEnvironmentVariable("DB_HOSTNAME"),
+    port: parseInt(getEnvironmentVariable("DB_PORT")),
+  };
+
+  return result;
+
+  function getEnvironmentVariable(name: string): string {
+    const result = Deno.env.get(name);
+    if (result) {
+      return result;
+    }
+    throw new Error(
+      `Environment variable ${name} is not defined; Cannot connect to database`
+    );
+  }
+}
+
+interface DBCredentials {
+  user: string;
+  databaseName: string;
+  hostname: string;
+  port: number;
+}

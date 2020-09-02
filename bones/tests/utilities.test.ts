@@ -1,5 +1,8 @@
-import { assertEquals } from "http://deno.land/std@0.66.0/testing/asserts.ts";
-import { getAppName, getPort } from "../src/utilities.ts";
+import {
+  assertEquals,
+  assertThrows,
+} from "http://deno.land/std@0.66.0/testing/asserts.ts";
+import { getAppName, getPort, getDBCredentials } from "../src/utilities.ts";
 
 Deno.test({
   name: "getAppName returns undefined if APP_NAME does not exist in env",
@@ -37,4 +40,48 @@ Deno.test({
     assertEquals(getPort(), 8000);
   },
   sanitizeOps: false,
+});
+
+Deno.test({
+  name:
+    "when an environment variable necessary for database connection is not in the environment, 'getDBCredentials' should throw",
+  fn: () => {
+    Deno.env.set("DB_NAME", "dbname");
+    Deno.env.set("DB_HOSTNAME", "localhost");
+    Deno.env.set("DB_PORT", "5432");
+
+    Deno.env.delete("DB_USER");
+    assertThrows(() => getDBCredentials());
+
+    Deno.env.set("DB_USER", "postgres");
+    Deno.env.delete("DB_NAME");
+    assertThrows(() => getDBCredentials());
+
+    Deno.env.set("DB_NAME", "dbname");
+    Deno.env.delete("DB_HOSTNAME");
+    assertThrows(() => getDBCredentials());
+
+    Deno.env.set("DB_HOSTNAME", "localhost");
+    Deno.env.delete("DB_PORT");
+    assertThrows(() => getDBCredentials());
+  },
+  sanitizeOps: false,
+});
+
+Deno.test({
+  name:
+    "when all environment vars are set for the DB, 'getDBCredentials' should return a correct DBCredentials object",
+  fn: () => {
+    Deno.env.set("DB_USER", "postgres");
+    Deno.env.set("DB_NAME", "dbname");
+    Deno.env.set("DB_HOSTNAME", "localhost");
+    Deno.env.set("DB_PORT", "5432");
+
+    assertEquals(getDBCredentials(), {
+      user: "postgres",
+      databaseName: "dbname",
+      hostname: "localhost",
+      port: 5432,
+    });
+  },
 });

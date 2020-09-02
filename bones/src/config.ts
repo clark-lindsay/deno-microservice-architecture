@@ -19,7 +19,7 @@ export async function initializeDB(): Promise<Client> {
   }
 
   return await createDBClient({
-    connectcionString: dbConnectionURL ?? "",
+    connectcionString: dbConnectionURL,
   });
 }
 

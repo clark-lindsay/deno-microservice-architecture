@@ -31,7 +31,7 @@ const config: DenonConfig = {
         DATABASE_URL: "0.0.0.0:5432",
       },
       allow: ["net", "env"],
-      watch: false,
+      watch: true,
     },
   },
 };
