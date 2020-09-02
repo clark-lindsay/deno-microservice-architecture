@@ -3,7 +3,7 @@ import Dex from "https://raw.githubusercontent.com/denjucks/dex/master/mod.ts";
 import { Client } from "https://deno.land/x/postgres/mod.ts";
 import { QueryResult } from "https://deno.land/x/postgres/query.ts";
 
-export function createHome({ db }: { db: Promise<Client> }) {
+export function createHome({ db }: { db: Promise<Client> }): App {
   const queries = createQueries({ db });
   const handlers = createHandlers({ queries });
   const router = new oak.Router();
@@ -13,16 +13,17 @@ export function createHome({ db }: { db: Promise<Client> }) {
   return { handlers, queries, router };
 }
 
-function createQueries({ db }: { db: Promise<Client> }): any {
+function createQueries({ db }: { db: Promise<Client> }): Queries {
   async function loadHomePage() {
-    return db.then(async (client) => {
+    console.log("request received to load the home page");
+    return db.then(async (client: Client) => {
       const dex = Dex({ client: "postgres" });
       const queryString = dex("videos")
         .sum("view_count as videosWatched")
         .toString();
 
       const result: QueryResult = await client.query(queryString);
-      console.log(result.rows[0]);
+      console.log(`Result: ${result.rows}`);
       return result.rows[0];
     });
   }
@@ -31,12 +32,19 @@ function createQueries({ db }: { db: Promise<Client> }): any {
 }
 
 function createHandlers({ queries }: { queries: Queries }): Handlers {
-  function home(ctx: oak.Context): void {
-    queries["loadHomePage"]()
-      .then((viewData: any) => (ctx.response.body = `<p> ${viewData} </p>`))
-      .catch(ctx.throw(500));
+  async function home(ctx: oak.Context): Promise<void> {
+    console.log("request received at the root");
+    queries
+      .loadHomePage()
+      .then((viewData: any) => (ctx.response.body = `<p> ${viewData} </p>`));
   }
   return { home };
+}
+
+export interface App {
+  handlers: Handlers;
+  queries: Queries;
+  router: oak.Router;
 }
 
 interface Queries {

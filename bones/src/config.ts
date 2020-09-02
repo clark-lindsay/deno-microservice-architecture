@@ -1,14 +1,14 @@
-import { createDBClient } from "./createDexClient.ts";
-import { createHome } from "./app/home/index.ts";
+import { createDBClient } from "./createDBClient.ts";
+import { createHome, App } from "./app/home/index.ts";
 import { Client } from "https://deno.land/x/postgres/mod.ts";
 
-export function createConfig(): any {
+export function createConfig(): AppConfig {
   const db = initializeDB();
-  const homeApp = createHome({ db });
+  const home = createHome({ db });
 
   return {
     db,
-    homeApp,
+    home,
   };
 }
 
@@ -18,7 +18,12 @@ export async function initializeDB(): Promise<Client> {
     throw new Error("No environment variable found for 'DATABASE_URL'");
   }
 
-  return createDBClient({
+  return await createDBClient({
     connectcionString: dbConnectionURL ?? "",
   });
+}
+
+export interface AppConfig {
+  db: Promise<Client>;
+  home: App;
 }

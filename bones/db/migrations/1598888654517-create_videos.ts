@@ -1,5 +1,4 @@
 import { Migration } from "https://deno.land/x/nessie/mod.ts";
-import Dex from "https://raw.githubusercontent.com/denjucks/dex/master/mod.ts";
 import { Schema, Table } from "https://deno.land/x/nessie/qb.ts";
 
 // runs on migrate

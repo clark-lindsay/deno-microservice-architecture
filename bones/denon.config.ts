@@ -12,6 +12,16 @@ const config: DenonConfig = {
       },
       allow: ["net", "env"],
     },
+    inspect: {
+      cmd: "deno run --inspect-brk src/server.ts",
+      desc: "run the server on localhost:8080",
+      env: {
+        PORT: "8080",
+        APP_NAME: "MICROSERVE",
+        DATABASE_URL: "0.0.0.0:5432",
+      },
+      allow: ["net", "env"],
+    },
     test: {
       cmd: "deno test",
       desc: "run all the tests",

@@ -3,7 +3,6 @@ import { Client } from "https://deno.land/x/postgres/mod.ts";
 export async function createDBClient({
   connectcionString,
 }: DBConnectionArgs): Promise<Client> {
-  console.log(connectcionString);
   const client = new Client({
     user: "postgres",
     database: "practical_microservices",

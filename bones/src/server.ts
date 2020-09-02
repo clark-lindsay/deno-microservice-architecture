@@ -1,9 +1,9 @@
-import { initializeServer } from "./initialize_server.ts";
+import { createServer } from "./createServer.ts";
 import { createConfig } from "./config.ts";
 import { getAppName, getPort } from "./utilities.ts";
 
 const config = createConfig();
-const app = initializeServer(config);
+const app = createServer(config);
 
 app.addEventListener("listen", ({ hostname, port }) => {
   const appName = getAppName();
@@ -13,4 +13,10 @@ app.addEventListener("listen", ({ hostname, port }) => {
   );
   console.log(`Listening on http://${hostname ?? "localhost"}:${port}`);
 });
-app.listen({ port: getPort() ?? 8080 });
+
+await app.listen({ port: getPort() ?? 8080 });
+
+config.db.then((client) => {
+  console.log("Closing the database connection");
+  client.end();
+});
