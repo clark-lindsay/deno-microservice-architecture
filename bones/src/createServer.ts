@@ -8,6 +8,5 @@ export function createServer(config: AppConfig): oak.Application {
   mountMiddleware(app);
   mountRoutes(app, config);
 
-  console.log("returning the completed home app");
   return app;
 }

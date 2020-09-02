@@ -15,7 +15,6 @@ export function createHome({ db }: { db: Promise<Client> }): App {
 
 function createQueries({ db }: { db: Promise<Client> }): Queries {
   async function loadHomePage() {
-    console.log("request received to load the home page");
     return db.then(async (client: Client) => {
       const dex = Dex({ client: "postgres" });
       const queryString = dex("videos")
@@ -23,7 +22,6 @@ function createQueries({ db }: { db: Promise<Client> }): Queries {
         .toString();
 
       const result: QueryResult = await client.query(queryString);
-      console.log(`Result: ${result.rows}`);
       return result.rows[0];
     });
   }
@@ -33,7 +31,6 @@ function createQueries({ db }: { db: Promise<Client> }): Queries {
 
 function createHandlers({ queries }: { queries: Queries }): Handlers {
   async function home(ctx: oak.Context): Promise<void> {
-    console.log("request received at the root");
     queries
       .loadHomePage()
       .then((viewData: any) => (ctx.response.body = `<p> ${viewData} </p>`));
