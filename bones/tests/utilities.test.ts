@@ -1,7 +1,5 @@
-import {
-  assertEquals,
-  assertThrows,
-} from "http://deno.land/std@0.66.0/testing/asserts.ts";
+import { asserts } from "../src/deps.ts";
+const { assertEquals, assertThrows } = asserts;
 import { getAppName, getPort, getDBCredentials } from "../src/utilities.ts";
 
 Deno.test({

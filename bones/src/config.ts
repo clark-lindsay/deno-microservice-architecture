@@ -1,6 +1,6 @@
 import { createDBClient } from "./createDBClient.ts";
 import { createHome, App } from "./app/home/index.ts";
-import { Client } from "https://deno.land/x/postgres/mod.ts";
+import { postgres } from "./deps.ts";
 import { getDBCredentials } from "./utilities.ts";
 
 export function createConfig(): AppConfig {
@@ -14,6 +14,6 @@ export function createConfig(): AppConfig {
 }
 
 export interface AppConfig {
-  db: Promise<Client>;
+  db: Promise<postgres.Client>;
   home: App;
 }

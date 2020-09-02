@@ -1,11 +1,14 @@
 import { uuid } from "./deps.ts";
-import { Application, Context } from "https://deno.land/x/oak/mod.ts";
+import { oak } from "./deps.ts";
 
-export function mountMiddleware(app: Application) {
+export function mountMiddleware(app: oak.Application) {
   app.use(generateRequestTraceId);
 }
 
-async function generateRequestTraceId(ctx: Context, next: () => Promise<any>) {
+async function generateRequestTraceId(
+  ctx: oak.Context,
+  next: () => Promise<any>
+) {
   ctx.state["requestTraceId"] = uuid.v4.generate();
   await next();
 }

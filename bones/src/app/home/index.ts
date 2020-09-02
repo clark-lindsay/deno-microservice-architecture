@@ -1,9 +1,8 @@
 import { oak } from "../../deps.ts";
 import Dex from "https://raw.githubusercontent.com/denjucks/dex/master/mod.ts";
-import { Client } from "https://deno.land/x/postgres/mod.ts";
-import { QueryResult } from "https://deno.land/x/postgres/query.ts";
+import { postgres, QueryResult } from "../../deps.ts";
 
-export function createHome({ db }: { db: Promise<Client> }): App {
+export function createHome({ db }: { db: Promise<postgres.Client> }): App {
   const queries = createQueries({ db });
   const handlers = createHandlers({ queries });
   const router = new oak.Router();
@@ -13,9 +12,9 @@ export function createHome({ db }: { db: Promise<Client> }): App {
   return { handlers, queries, router };
 }
 
-function createQueries({ db }: { db: Promise<Client> }): Queries {
+function createQueries({ db }: { db: Promise<postgres.Client> }): Queries {
   async function loadHomePage() {
-    return db.then(async (client: Client) => {
+    return db.then(async (client: postgres.Client) => {
       const dex = Dex({ client: "postgres" });
       const queryString = dex("videos")
         .sum("view_count as videosWatched")

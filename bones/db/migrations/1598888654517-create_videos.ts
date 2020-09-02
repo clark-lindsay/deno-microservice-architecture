@@ -1,5 +1,5 @@
-import { Migration } from "https://deno.land/x/nessie/mod.ts";
-import { Schema, Table } from "https://deno.land/x/nessie/qb.ts";
+import { Migration } from "../../src/deps.ts";
+import { Schema, Table } from "../../src/deps.ts";
 
 // runs on migrate
 export const up: Migration<Schema> = ({ queryBuilder }) => {

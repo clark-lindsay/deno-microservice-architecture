@@ -1,4 +1,4 @@
-import { superoak } from "https://deno.land/x/superoak@2.1.0/mod.ts";
+import { superoak } from "../src/deps.ts";
 
 import { createServer } from "../src/createServer.ts";
 import { createConfig } from "../src/config.ts";
