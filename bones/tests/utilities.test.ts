@@ -84,4 +84,5 @@ Deno.test({
       port: 5432,
     });
   },
+  sanitizeOps: false,
 });

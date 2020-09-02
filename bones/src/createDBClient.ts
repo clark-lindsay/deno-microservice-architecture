@@ -1,20 +1,15 @@
 import { Client } from "https://deno.land/x/postgres/mod.ts";
+import { DBCredentials } from "./utilities.ts";
 
-export async function createDBClient({
-  connectcionString,
-}: DBConnectionArgs): Promise<Client> {
+export async function createDBClient(dbInfo: DBCredentials): Promise<Client> {
   const client = new Client({
-    user: "postgres",
-    database: "practical_microservices",
-    hostname: "localhost",
-    port: 5432,
+    user: dbInfo.user,
+    database: dbInfo.databaseName,
+    hostname: dbInfo.hostname,
+    port: dbInfo.port,
   });
   await client.connect();
 
   return client;
 }
 
-interface DBConnectionArgs {
-  connectcionString: string;
-  migrationsTableName?: string;
-}

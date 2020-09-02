@@ -8,7 +8,7 @@ export function createHome({ db }: { db: Promise<Client> }): App {
   const handlers = createHandlers({ queries });
   const router = new oak.Router();
 
-  router.get("/", handlers.home);
+  router.get("/query", handlers.home);
 
   return { handlers, queries, router };
 }
@@ -22,6 +22,7 @@ function createQueries({ db }: { db: Promise<Client> }): Queries {
         .toString();
 
       const result: QueryResult = await client.query(queryString);
+      console.log(`Result of query: ${result.rows}`);
       return result.rows[0];
     });
   }
@@ -31,9 +32,10 @@ function createQueries({ db }: { db: Promise<Client> }): Queries {
 
 function createHandlers({ queries }: { queries: Queries }): Handlers {
   async function home(ctx: oak.Context): Promise<void> {
-    queries
-      .loadHomePage()
-      .then((viewData: any) => (ctx.response.body = `<p> ${viewData} </p>`));
+    queries.loadHomePage().then((viewData: any) => {
+      console.log(`View data: ${viewData}`);
+      ctx.response.body = `<p> ${viewData} </p>`;
+    });
   }
   return { home };
 }

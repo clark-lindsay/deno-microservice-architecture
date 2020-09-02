@@ -35,7 +35,7 @@ export function getDBCredentials(): DBCredentials {
   }
 }
 
-interface DBCredentials {
+export interface DBCredentials {
   user: string;
   databaseName: string;
   hostname: string;
