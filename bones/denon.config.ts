@@ -39,7 +39,7 @@ const config: DenonConfig = {
         DB_HOSTNAME: "localhost",
         DB_PORT: "5432",
       },
-      allow: ["net", "env"],
+      allow: ["net", "env", "run"],
       watch: true,
     },
   },

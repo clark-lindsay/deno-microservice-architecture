@@ -21,7 +21,6 @@ function createQueries({ db }: { db: Promise<postgres.Client> }): Queries {
         .toString();
 
       const result: QueryResult = await client.query(queryString);
-      console.log(`Result of query: ${result.rows}`);
       return result.rows[0];
     });
   }
@@ -31,10 +30,8 @@ function createQueries({ db }: { db: Promise<postgres.Client> }): Queries {
 
 function createHandlers({ queries }: { queries: Queries }): Handlers {
   async function home(ctx: oak.Context): Promise<void> {
-    queries.loadHomePage().then((viewData: any) => {
-      console.log(`View data: ${viewData}`);
-      ctx.response.body = `<p> ${viewData} </p>`;
-    });
+    const viewData = await queries.loadHomePage();
+    ctx.response.body = `<p>${viewData}</p>`;
   }
   return { home };
 }
