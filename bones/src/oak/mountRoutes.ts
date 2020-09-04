@@ -1,4 +1,4 @@
-import { oak } from "../deps.ts";
+import { oak } from "../../deps.ts";
 import { AppConfig } from "../config.ts";
 import { createHome } from "../app/home/index.ts";
 import { createDBClient } from "../createDBClient.ts";

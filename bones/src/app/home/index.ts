@@ -1,6 +1,6 @@
-import { oak } from "../../deps.ts";
+import { oak } from "../../../deps.ts";
 import Dex from "https://raw.githubusercontent.com/denjucks/dex/master/mod.ts";
-import { postgres, QueryResult } from "../../deps.ts";
+import { postgres, QueryResult } from "../../../deps.ts";
 
 export function createHome({ db }: { db: Promise<postgres.Client> }): App {
   const queries = createQueries({ db });

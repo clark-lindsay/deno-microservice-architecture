@@ -1,4 +1,4 @@
-import { postgres } from "./deps.ts";
+import { postgres } from "../deps.ts";
 import { DBCredentials } from "./utilities.ts";
 
 export async function createDBClient(

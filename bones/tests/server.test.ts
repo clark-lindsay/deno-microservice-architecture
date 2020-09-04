@@ -1,4 +1,4 @@
-import { superoak } from "../src/deps.ts";
+import { superoak } from "../deps.ts";
 
 import { createServer } from "../src/createServer.ts";
 import { createConfig } from "../src/config.ts";
@@ -19,7 +19,7 @@ Deno.test({
 
 Deno.test({
   name:
-    "when GET-ing the '/query' route, it returns a sum of the views in the test table",
+    "when GET-ing the '/query' route, it returns a sum of the views in the test videos table",
   fn: async () => {
     const request = await superoak(app);
     await request.get("/query").expect(200).expect("<p>42</p>");

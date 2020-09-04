@@ -1,5 +1,5 @@
-import { uuid } from "./deps.ts";
-import { oak } from "./deps.ts";
+import { uuid } from "../deps.ts";
+import { oak } from "../deps.ts";
 
 export function mountMiddleware(app: oak.Application) {
   app.use(generateRequestTraceId);

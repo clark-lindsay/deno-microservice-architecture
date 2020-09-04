@@ -1,4 +1,4 @@
-import { oak } from "./deps.ts";
+import { oak } from "../deps.ts";
 import { mountMiddleware } from "./mountMiddleware.ts";
 import { mountRoutes } from "./oak/mountRoutes.ts";
 import { AppConfig } from "./config.ts";

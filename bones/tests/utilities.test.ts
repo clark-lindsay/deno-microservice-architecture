@@ -1,4 +1,4 @@
-import { asserts } from "../src/deps.ts";
+import { asserts } from "../deps.ts";
 const { assertEquals, assertThrows } = asserts;
 import { getAppName, getPort, getDBCredentials } from "../src/utilities.ts";
 
