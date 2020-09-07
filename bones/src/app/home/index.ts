@@ -20,8 +20,8 @@ function createQueries({ db }: { db: Promise<postgres.Client> }): Queries {
         .sum("view_count as videosWatched")
         .toString();
 
-      const result: QueryResult = await client.query(queryString);
-      return result.rows[0];
+      const queryResult: QueryResult = await client.query(queryString);
+      return queryResult.rows[0];
     });
   }
 
