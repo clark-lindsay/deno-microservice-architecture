@@ -9,9 +9,9 @@ const clientOptions = {
 /** Select one of the supported clients */
 const clientPg = new ClientPostgreSQL(clientOptions, {
   user: "postgres",
-  database: "practical_microservices",
+  database: "message_store",
   hostname: "localhost",
-  port: 5432,
+  port: 5433,
 });
 
 /** This is the final config object */

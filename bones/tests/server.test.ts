@@ -19,6 +19,16 @@ Deno.test({
 });
 
 Deno.test({
+  name: "when GET-ing the root, it returns a global count of video views",
+  fn: async () => {
+    const request = await superoak(app);
+    await request.get("/").expect(200).expect("<h1>1000</h1>");
+  },
+  sanitizeResources: false,
+  sanitizeOps: false,
+});
+
+Deno.test({
   name:
     "when GET-ing the '/query' route, it returns a sum of the views in the test videos table",
   fn: async () => {

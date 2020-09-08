@@ -17,5 +17,5 @@ export const up: Migration<Schema> = ({ queryBuilder }) => {
 
 // runs on rollback
 export const down: Migration<Schema> = ({ queryBuilder }) => {
-  return queryBuilder.drop("videos");
+  return queryBuilder.drop("videos", true);
 };

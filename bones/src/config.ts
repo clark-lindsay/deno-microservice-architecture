@@ -4,11 +4,13 @@ import { postgres } from "../deps.ts";
 import { getDBCredentials } from "./utilities.ts";
 
 export function createConfig(): AppConfig {
-  const db = createDBClient(getDBCredentials());
-  const home = createHome({ db });
+  const messageStoreInterface = createDBClient(getDBCredentials());
+  const home = createHome({
+    db: messageStoreInterface.then((store) => store.db),
+  });
 
   return {
-    db,
+    db: messageStoreInterface.then((store) => store.db),
     home,
   };
 }
