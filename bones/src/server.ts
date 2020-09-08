@@ -2,7 +2,7 @@ import { createServer } from "./createServer.ts";
 import { createConfig } from "./config.ts";
 import { getAppName, getPort } from "./utilities.ts";
 
-const config = createConfig();
+const config = await createConfig();
 const app = createServer(config);
 
 app.addEventListener("listen", ({ hostname, port }) => {

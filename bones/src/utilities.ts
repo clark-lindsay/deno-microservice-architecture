@@ -20,6 +20,8 @@ export function getDBCredentials(): DBCredentials {
     databaseName: getEnvironmentVariable("DB_NAME"),
     hostname: getEnvironmentVariable("DB_HOSTNAME"),
     port: parseInt(getEnvironmentVariable("DB_PORT")),
+    messageStoreName: getEnvironmentVariable("MESSAGE_STORE_NAME"),
+    messageStorePort: parseInt(getEnvironmentVariable("MESSAGE_STORE_PORT")),
   };
 
   return result;
@@ -40,4 +42,6 @@ export interface DBCredentials {
   databaseName: string;
   hostname: string;
   port: number;
+  messageStoreName: string;
+  messageStorePort: number;
 }

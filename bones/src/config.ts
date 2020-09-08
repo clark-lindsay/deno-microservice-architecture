@@ -1,21 +1,33 @@
+import { postgres } from "../deps.ts";
+
 import { createDBClient } from "./createDBClient.ts";
 import { createHome, App } from "./app/home/index.ts";
-import { postgres } from "../deps.ts";
 import { getDBCredentials } from "./utilities.ts";
+import { createMessageStorePGClient } from "./createMessageStorePGClient.ts";
+import { createMessageStore, MessageStore } from "./messageStore/index.ts";
 
-export function createConfig(): AppConfig {
-  const messageStoreInterface = createDBClient(getDBCredentials());
+export async function createConfig(): Promise<AppConfig> {
+  const db = createDBClient(getDBCredentials());
+  const messageStoreClient = await createMessageStorePGClient(
+    getDBCredentials()
+  );
+  const messageStore = createMessageStore({ db: messageStoreClient });
+
   const home = createHome({
-    db: messageStoreInterface.then((store) => store.db),
+    db,
   });
 
   return {
-    db: messageStoreInterface.then((store) => store.db),
+    db,
+    messageStore,
     home,
+    _rawMsgStoreDB: messageStoreClient._rawDB,
   };
 }
 
 export interface AppConfig {
   db: Promise<postgres.Client>;
+  messageStore: MessageStore;
   home: App;
+  _rawMsgStoreDB: postgres.Client;
 }

@@ -1,11 +1,10 @@
-import { MessageStore } from "../createDBClient.ts";
-
 import { QueryResult } from "../../deps.ts";
+import { MessageStorePGClient } from "../createMessageStorePGClient.ts";
 
 const versionConflictErrorRegex: RegExp = /^Wrong.*Stream Version: (\d+)\)/;
 
 export function createWrite(
-  msgStore: MessageStore
+  db: MessageStorePGClient
 ): (
   streamName: string,
   message: Message,
@@ -22,7 +21,7 @@ export function createWrite(
 
     const queryString = `SELECT message_store.write_message(${message.id}, ${streamName}, ${message.type}, ${message.data}, ${message.metaData}, ${expectedVersion})`;
 
-    return msgStore.query(queryString).catch((err) => {
+    return db.query(queryString).catch((err: any) => {
       const errorMatch = err.message.match(versionConflictErrorRegex);
       if (errorMatch === null) {
         throw err;

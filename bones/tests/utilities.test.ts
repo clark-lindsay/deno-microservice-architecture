@@ -47,6 +47,8 @@ Deno.test({
     Deno.env.set("DB_NAME", "dbname");
     Deno.env.set("DB_HOSTNAME", "localhost");
     Deno.env.set("DB_PORT", "5432");
+    Deno.env.set("MESSAGE_STORE_PORT", "5433");
+    Deno.env.set("MESSAGE_STORE_NAME", "message_store");
 
     Deno.env.delete("DB_USER");
     assertThrows(() => getDBCredentials());
@@ -62,6 +64,14 @@ Deno.test({
     Deno.env.set("DB_HOSTNAME", "localhost");
     Deno.env.delete("DB_PORT");
     assertThrows(() => getDBCredentials());
+
+    Deno.env.set("DB_HOSTNAME", "localhost");
+    Deno.env.delete("MESSAGE_STORE_PORT");
+    assertThrows(() => getDBCredentials());
+
+    Deno.env.set("MESSAGE_STORE_PORT", "5433");
+    Deno.env.delete("MESSAGE_STORE_NAME");
+    assertThrows(() => getDBCredentials());
   },
   sanitizeOps: false,
 });
@@ -74,12 +84,16 @@ Deno.test({
     Deno.env.set("DB_NAME", "dbname");
     Deno.env.set("DB_HOSTNAME", "localhost");
     Deno.env.set("DB_PORT", "5432");
+    Deno.env.set("MESSAGE_STORE_NAME", "message_store");
+    Deno.env.set("MESSAGE_STORE_PORT", "5433");
 
     assertEquals(getDBCredentials(), {
       user: "postgres",
       databaseName: "dbname",
       hostname: "localhost",
       port: 5432,
+      messageStoreName: "message_store",
+      messageStorePort: 5433,
     });
   },
   sanitizeOps: false,

@@ -4,7 +4,7 @@ import Dex from "https://raw.githubusercontent.com/denjucks/dex/master/mod.ts";
 import { createServer } from "../src/createServer.ts";
 import { createConfig } from "../src/config.ts";
 
-const config = createConfig();
+const config = await createConfig();
 const app = createServer(config);
 await startTestDB();
 
@@ -59,11 +59,11 @@ async function startTestDB() {
   await runNessieCommand("migrate");
 
   async function runNessieCommand(command: string) {
-    const rollbackDB = Deno.run({
+    const dbCommand = Deno.run({
       cmd: createNessieCommand(command),
     });
 
-    const { code } = await rollbackDB.status();
+    const { code } = await dbCommand.status();
     if (code !== 0) {
       throw Error(`${command} failed!`);
     }
