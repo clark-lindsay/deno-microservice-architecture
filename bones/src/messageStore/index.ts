@@ -1,4 +1,4 @@
-import { createWrite, Message } from "./write.ts";
+import { createWrite, Message, MessageWriteArgs } from "./write.ts";
 import { MessageStorePGClient } from "../createMessageStorePGClient.ts";
 import { QueryResult } from "../../deps.ts";
 
@@ -15,9 +15,5 @@ export function createMessageStore({
 }
 
 export interface MessageStore {
-  write: (
-    streamName: string,
-    message: Message,
-    expectedVersion: number
-  ) => Promise<QueryResult>;
+  write: (args: MessageWriteArgs) => Promise<QueryResult>;
 }

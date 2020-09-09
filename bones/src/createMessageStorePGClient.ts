@@ -12,10 +12,10 @@ export async function createMessageStorePGClient(
     port: dbInfo.messageStorePort,
   });
   await result.connect();
-  await result.query("SET search_path = message_store, public");
 
   async function query(sql: string): Promise<QueryResult> {
     await result.connect();
+    await result.query("SET search_path = message_store, public");
     return result.query(sql);
   }
 

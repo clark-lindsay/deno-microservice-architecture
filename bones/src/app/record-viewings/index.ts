@@ -1,7 +1,12 @@
 import { uuid } from "../../../deps.ts";
 import { Message } from "../../messageStore/write.ts";
+import { MessageStore } from "../../messageStore/index.ts";
 
-export function createActions({ messageStore }: { messageStore: any }) {
+export function createActions({
+  messageStore,
+}: {
+  messageStore: MessageStore;
+}) {
   function recordViewing(traceId: string, videoId: string, userId: string) {
     const viewedEvent: Message = {
       id: uuid.v4.generate(),
@@ -17,7 +22,11 @@ export function createActions({ messageStore }: { messageStore: any }) {
     };
     const streamName = `viewing-${videoId}`;
 
-    return messageStore.write(streamName, viewedEvent);
+    return messageStore.write({
+      streamName,
+      message: viewedEvent,
+      expectedVersion: 0,
+    });
   }
 
   return {

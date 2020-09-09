@@ -1,10 +1,9 @@
-import { superoak, asserts } from "../deps.ts";
+import { asserts, uuid } from "../deps.ts";
 
-import { createServer } from "../src/createServer.ts";
 import { createConfig } from "../src/config.ts";
+import { Message } from "../src/messageStore/write.ts";
 
 const config = await createConfig();
-const app = createServer(config);
 
 Deno.test({
   name: "the message store exists when the app is launched",
@@ -25,5 +24,60 @@ Deno.test({
     asserts.assert(result.rowCount === 8);
   },
   sanitizeResources: false,
+});
+
+Deno.test({
+  name: "the 'write' method allows appending to the message store",
+  fn: async () => {
+    const messageDB = await config._rawMsgStoreDB;
+    const testMessage = createTestMessage({ type: "TestWrite" });
+
+    await config.messageStore.write({
+      streamName: `test-${testMessage.id}`,
+      message: testMessage,
+      expectedVersion: -1,
+    });
+
+    const messages = await messageDB.query(
+      `SELECT * FROM message_store.messages WHERE id = '${testMessage.id}'`
+    );
+
+    asserts.assertEquals(messages.rowCount, 1);
+  },
+  sanitizeResources: false,
+});
+
+Deno.test({
+  name:
+    "the 'write' method should throw a version conflict error if the expected version of the stream is incorrect",
+  fn: async () => {
+    const testMessage = createTestMessage({ type: "TestWrite" });
+
+    asserts.assertThrowsAsync(
+      () =>
+        config.messageStore.write({
+          streamName: `test-${testMessage.id}`,
+          message: testMessage,
+          expectedVersion: 10,
+        }),
+      Error,
+      "VersionConflict"
+    );
+  },
+  sanitizeResources: false,
   sanitizeOps: false,
 });
+
+function createTestMessage({ type }: { type: string }): Message {
+  return {
+    id: uuid.v4.generate(),
+    type,
+    data: {
+      ownerId: uuid.v4.generate(),
+      sourceUri: "https://sourceurl.com/",
+    },
+    metaData: {
+      traceId: uuid.v4.generate(),
+    },
+  };
+}
