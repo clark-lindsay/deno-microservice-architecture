@@ -43,7 +43,7 @@ export function createWrite(
   };
 }
 
-export interface Message {
+export interface OutgoingMessage {
   type: string;
   data: object;
   metaData: object;
@@ -52,6 +52,6 @@ export interface Message {
 
 export interface MessageWriteArgs {
   streamName: string;
-  message: Message;
+  message: OutgoingMessage;
   expectedVersion: number;
 }

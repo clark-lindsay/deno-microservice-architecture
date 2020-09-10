@@ -1,6 +1,7 @@
 export * as oak from "https://deno.land/x/oak/mod.ts";
 export * as uuid from "https://deno.land/std@0.65.0/uuid/mod.ts";
-export { camelCase } from "https://denolib.com/denolib/camelcase/mod.ts";
+export * as DateTime from "https://deno.land/std@0.67.0/datetime/mod.ts";
+export { camelCase } from "https://deno.land/x/case/mod.ts";
 export * as postgres from "https://deno.land/x/postgres/mod.ts";
 export { QueryResult } from "https://deno.land/x/postgres/query.ts";
 export * as asserts from "http://deno.land/std@0.66.0/testing/asserts.ts";

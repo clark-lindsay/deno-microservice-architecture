@@ -1,4 +1,5 @@
 import { oak } from "../../../deps.ts";
+import { camelCase } from "../../../deps.ts";
 import Dex from "https://raw.githubusercontent.com/denjucks/dex/master/mod.ts";
 import { postgres, QueryResult } from "../../../deps.ts";
 
@@ -16,9 +17,7 @@ function createQueries({ db }: { db: Promise<postgres.Client> }): Queries {
   async function loadHomePage() {
     return db.then(async (client: postgres.Client) => {
       const dex = Dex({ client: "postgres" });
-      const queryString = dex("videos")
-        .sum("view_count as videosWatched")
-        .toString();
+      const queryString = dex("pages").where({ page_name: "home" }).limit(1);
 
       const queryResult: QueryResult = await client.query(queryString);
       return queryResult.rows[0];

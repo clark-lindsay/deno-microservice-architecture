@@ -4,6 +4,7 @@ import { getAppName, getPort } from "./utilities.ts";
 
 const config = await createConfig();
 const app = createServer(config);
+config.aggregators.forEach((agg) => agg.start());
 
 app.addEventListener("listen", ({ hostname, port }) => {
   const appName = getAppName();
