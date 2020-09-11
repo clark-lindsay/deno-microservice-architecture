@@ -21,7 +21,7 @@ export function configureCreateSubscription({
 
     async function loadPosition() {
       const message = await readLastMessage(subscriberStreamName);
-      currentPosition = message ? message.data.position : 0;
+      currentPosition = message ? message.position : 0;
     }
 
     async function updateReadPosition(position: number): Promise<any> {
@@ -130,10 +130,10 @@ export interface SubscriptionCreationArgs {
 interface ConfigureCreateArgs {
   streamName: string;
   handlers: { [key: string]: (event: IncomingMessage) => any };
-  messagesPerTick: number;
+  messagesPerTick?: number;
   subscriberId: string;
-  positionUpdateInterval: number;
-  tickIntervalInMs: number;
+  positionUpdateInterval?: number;
+  tickIntervalInMs?: number;
 }
 
 function delay(ms: number) {

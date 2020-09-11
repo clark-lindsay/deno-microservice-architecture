@@ -1,7 +1,7 @@
 import { asserts, uuid } from "../deps.ts";
 
 import { createConfig } from "../src/config.ts";
-import { Message } from "../src/messageStore/write.ts";
+import { OutgoingMessage } from "../src/messageStore/write.ts";
 
 const config = await createConfig();
 
@@ -68,7 +68,7 @@ Deno.test({
   sanitizeOps: false,
 });
 
-function createTestMessage({ type }: { type: string }): Message {
+function createTestMessage({ type }: { type: string }): OutgoingMessage {
   return {
     id: uuid.v4.generate(),
     type,

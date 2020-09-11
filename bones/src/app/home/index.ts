@@ -17,7 +17,10 @@ function createQueries({ db }: { db: Promise<postgres.Client> }): Queries {
   async function loadHomePage() {
     return db.then(async (client: postgres.Client) => {
       const dex = Dex({ client: "postgres" });
-      const queryString = dex("pages").where({ page_name: "home" }).limit(1);
+      const queryString = dex("pages")
+        .where({ page_name: "home" })
+        .limit(1)
+        .toString();
 
       const queryResult: QueryResult = await client.query(queryString);
       return queryResult.rows[0];

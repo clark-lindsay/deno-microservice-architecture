@@ -4,7 +4,11 @@ import { MessageStorePGClient } from "../createMessageStorePGClient.ts";
 export function createWrite(
   db: MessageStorePGClient
 ): (args: MessageWriteArgs) => Promise<QueryResult> {
-  return async ({ streamName, message, expectedVersion }: MessageWriteArgs) => {
+  return async ({
+    streamName,
+    message,
+    expectedVersion,
+  }: MessageWriteArgs): Promise<QueryResult> => {
     if (!message.type) {
       throw new Error("Messages must have a type");
     }

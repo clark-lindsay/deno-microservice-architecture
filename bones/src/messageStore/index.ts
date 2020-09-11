@@ -1,6 +1,8 @@
 import { createWrite, MessageWriteArgs } from "./write.ts";
 import { MessageStorePGClient } from "../createMessageStorePGClient.ts";
 import { QueryResult } from "../../deps.ts";
+import { configureCreateSubscription } from "./subscribe.ts";
+import { createRead } from "./read.ts";
 
 export function createMessageStore({
   db,
@@ -8,8 +10,15 @@ export function createMessageStore({
   db: MessageStorePGClient;
 }): MessageStore {
   const write = createWrite(db);
+  const readOptions = createRead({ db });
+  const createSubscription = configureCreateSubscription({
+    read: readOptions.read,
+    readLastMessage: readOptions.readLastMessage,
+    write,
+  });
 
   return {
+    createSubscription,
     write,
   };
 }
@@ -24,6 +33,9 @@ export interface MessageStore {
     streamName: string;
     handlers: any;
     subscriberId: string;
+    messagesPerTick?: number;
+    tickIntervalInMs?: number;
+    positionUpdateInterval?: number;
   }) => any;
 }
 
@@ -33,7 +45,7 @@ export interface IncomingMessage {
   globalPosition: number;
   time: Date;
   type: string;
-  data: { position: number };
+  data: object;
   metaData: object;
   id: string;
 }
