@@ -4,7 +4,7 @@ import { getAppName, getPort } from "./utilities.ts";
 
 const config = await createConfig();
 const app = createServer(config);
-config.aggregators.forEach((agg) => agg.start());
+await startAggregators();
 
 app.addEventListener("listen", ({ hostname, port }) => {
   const appName = getAppName();
@@ -21,3 +21,7 @@ config.db.then((client) => {
   console.log("Closing the database connection");
   client.end();
 });
+
+export async function startAggregators() {
+  config.aggregators.forEach(async (agg) => await agg.start());
+}

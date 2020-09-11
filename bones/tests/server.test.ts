@@ -3,10 +3,12 @@ import Dex from "https://raw.githubusercontent.com/denjucks/dex/master/mod.ts";
 
 import { createServer } from "../src/createServer.ts";
 import { createConfig } from "../src/config.ts";
+import { startAggregators } from "../src/server.ts";
 
 const config = await createConfig();
 const app = createServer(config);
 await startTestDB();
+await startAggregators();
 
 Deno.test({
   name: "when GET-ing the root, it returns a 200 OK status",

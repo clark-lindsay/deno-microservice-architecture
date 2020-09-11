@@ -17,7 +17,7 @@ export function createHomePageAggregator({
   });
 
   async function start() {
-    await init();
+    const initResponse = await init();
     subscription.start();
   }
 
@@ -42,7 +42,7 @@ function createQueries({ db }: { db: Promise<postgres.Client> }) {
 		INSERT INTO
 			pages(page_name, page_data)
 		VALUES
-			('home', ${pageData})
+			('home', '${JSON.stringify(pageData)}')
 		ON CONFLICT DO NOTHING
 		`;
 

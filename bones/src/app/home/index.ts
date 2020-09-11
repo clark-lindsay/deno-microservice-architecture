@@ -39,9 +39,14 @@ function createHandlers({ queries }: { queries: Queries }): Handlers {
 }
 
 export interface App {
+  actions?: Actions;
   handlers: Handlers;
-  queries: Queries;
+  queries?: Queries;
   router: oak.Router;
+}
+
+export interface Actions {
+  [key: string]: (args?: any) => Promise<any>;
 }
 
 interface Queries {
@@ -49,5 +54,5 @@ interface Queries {
 }
 
 interface Handlers {
-  [key: string]: (ctx: oak.Context) => void;
+  [key: string]: (ctx: oak.Context, args?: any) => void;
 }

@@ -10,7 +10,7 @@ export function configureCreateSubscription({
   return ({
     streamName,
     handlers,
-    messagesPerTick = 100,
+    messagesPerTick = 1000,
     subscriberId,
     positionUpdateInterval = 100,
     tickIntervalInMs = 100,
@@ -86,6 +86,7 @@ export function configureCreateSubscription({
 
     async function poll() {
       await loadPosition();
+
       while (keepGoing) {
         const messagesProcessed = await tick();
         if (messagesProcessed === 0) {
@@ -137,5 +138,6 @@ interface ConfigureCreateArgs {
 }
 
 function delay(ms: number) {
+  console.log(`delaying for  ${ms} ms`);
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

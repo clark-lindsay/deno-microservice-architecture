@@ -1,19 +1,23 @@
 import { oak } from "../../deps.ts";
 import { AppConfig } from "../config.ts";
-import { createHome } from "../app/home/index.ts";
-import { createDBClient } from "../createDBClient.ts";
+import { createHome, App } from "../app/home/index.ts";
+import { createRecordViewings } from "../app/record-viewings/index.ts";
 
-export function mountRoutes(app: oak.Application, config: AppConfig) {
+export function mountRoutes(serverApp: oak.Application, config: AppConfig) {
   const router = new oak.Router();
 
   router.get("/", (ctx) => {
     ctx.response.body = `<h1>${ctx.state.requestTraceId}</h1>`;
   });
 
-  const home = createHome({ db: config.db });
+  const apps: App[] = [];
+  apps.push(createHome({ db: config.db }));
+  apps.push(createRecordViewings({ messageStore: config.messageStore }));
 
-  app.use(router.routes());
-  app.use(router.allowedMethods());
-  app.use(home.router.routes());
-  app.use(home.router.allowedMethods());
+  serverApp.use(router.routes());
+  serverApp.use(router.allowedMethods());
+  apps.forEach((app) => {
+    serverApp.use(app.router.routes());
+    serverApp.use(app.router.allowedMethods());
+  });
 }

@@ -1,5 +1,4 @@
-import { Migration } from "../../deps.ts";
-import { Schema, Table } from "../../deps.ts";
+import { Migration, Schema, Table } from "../../deps.ts";
 
 // runs on migrate
 export const up: Migration<Schema> = ({ queryBuilder }) => {

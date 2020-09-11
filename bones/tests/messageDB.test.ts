@@ -2,8 +2,12 @@ import { asserts, uuid } from "../deps.ts";
 
 import { createConfig } from "../src/config.ts";
 import { OutgoingMessage } from "../src/messageStore/write.ts";
+import { createServer } from "../src/createServer.ts";
+import { startAggregators } from "../src/server.ts";
 
 const config = await createConfig();
+const app = await createServer(config);
+await startAggregators();
 
 Deno.test({
   name: "the message store exists when the app is launched",
